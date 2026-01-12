@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google AI 生態系 30 個應用 - 企業培訓教材</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #EA4335;
+            --google-yellow: #FBBC05;
+            --google-green: #34A853;
+            --bg-light: #F8F9FA;
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --card-shadow-hover: 0 10px 20px rgba(0,0,0,0.15), 0 6px 6px rgba(0,0,0,0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Google Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--google-blue) 0%, #5C9CE6 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 20px auto 0;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            position: sticky;
+            top: 160px;
+            z-index: 99;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #E0E0E0;
+            border-radius: 25px;
+            background: white;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--google-blue);
+            color: var(--google-blue);
+        }
+
+        .filter-btn.active {
+            background: var(--google-blue);
+            border-color: var(--google-blue);
+            color: white;
+        }
+
+        .filter-btn .count {
+            background: rgba(0,0,0,0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .filter-btn.active .count {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Platform Filter */
+        .platform-filter {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #E0E0E0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .platform-btn {
+            padding: 6px 14px;
+            border: 1px solid #E0E0E0;
+            border-radius: 16px;
+            background: white;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .platform-btn:hover {
+            background: #F1F3F4;
+        }
+
+        .platform-btn.active {
+            background: var(--google-green);
+            border-color: var(--google-green);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .results-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            padding: 20px 20px 15px;
+            border-bottom: 1px solid #F1F3F4;
+        }
+
+        .card-number {
+            display: inline-block;
+            background: var(--google-blue);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-right: 12px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: inline;
+        }
+
+        .tool-tags {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tool-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .tool-tag.gemini {
+            background: #E8F0FE;
+            color: var(--google-blue);
+        }
+
+        .tool-tag.notebook {
+            background: #FCE8E6;
+            color: var(--google-red);
+        }
+
+        .tool-tag.ai-studio {
+            background: #E6F4EA;
+            color: var(--google-green);
+        }
+
+        .tool-tag.opal {
+            background: #FEF7E0;
+            color: #F9AB00;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title .material-icons {
+            font-size: 16px;
+        }
+
+        .core-function {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .example-box {
+            background: #F8F9FA;
+            border-left: 4px solid var(--google-blue);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example-box p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .prompt-section {
+            background: #1E1E1E;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .prompt-text {
+            color: #D4D4D4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--google-blue);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #3367D6;
+        }
+
+        .copy-btn.copied {
+            background: var(--google-green);
+        }
+
+        .copy-btn .material-icons {
+            font-size: 14px;
+        }
+
+        .card-footer {
+            padding: 15px 20px;
+            background: #FAFAFA;
+            border-top: 1px solid #F1F3F4;
+        }
+
+        .dept-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dept-tag {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .dept-tag.marketing {
+            background: #FCE8E6;
+            color: #C5221F;
+        }
+
+        .dept-tag.hr {
+            background: #E6F4EA;
+            color: #1E8E3E;
+        }
+
+        .dept-tag.rd {
+            background: #E8F0FE;
+            color: #1A73E8;
+        }
+
+        .dept-tag.sales {
+            background: #FEF7E0;
+            color: #F9AB00;
+        }
+
+        .dept-tag.finance {
+            background: #F3E8FD;
+            color: #8430CE;
+        }
+
+        .dept-tag.admin {
+            background: #E0F2F1;
+            color: #00897B;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state .material-icons {
+            font-size: 64px;
+            color: #DADCE0;
+            margin-bottom: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            margin-top: 40px;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                top: 140px;
+            }
+
+            .filter-btn {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #323232;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast .material-icons {
+            color: var(--google-green);
+        }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--google-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: #3367D6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Google AI 生態系 30 個應用</h1>
+        <p>企業內部 AI 培訓教材 - 提升團隊 AI 應用能力</p>
+        <div class="search-container">
+            <span class="material-icons search-icon">search</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="搜尋工具、功能或關鍵字...">
+        </div>
+    </header>
+
+    <section class="filter-section">
+        <div class="filter-container" id="deptFilters">
+            <!-- Department filters will be generated by JS -->
+        </div>
+        <div class="platform-filter" id="platformFilters">
+            <!-- Platform filters will be generated by JS -->
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="results-info" id="resultsInfo"></div>
+        <div class="cards-grid" id="cardsGrid">
+            <!-- Cards will be generated by JS -->
+        </div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <span class="material-icons">search_off</span>
+            <h3>找不到相關結果</h3>
+            <p>請嘗試其他搜尋關鍵字或篩選條件</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Built with Google AI Studio | 企業內部培訓專用</p>
+    </footer>
+
+    <div class="toast" id="toast">
+        <span class="material-icons">check_circle</span>
+        <span id="toastMessage">提示詞已複製到剪貼簿</span>
+    </div>
+
+    <button class="scroll-top" id="scrollTop">
+        <span class="material-icons">arrow_upward</span>
+    </button>
+
+    <script>
+        // Data - 30 Google AI Applications
+        const applications = [
+            {
+                id: 1,
+                title: "拆解 YouTube 影片分析內容",
+                tools: ["Gemini"],
+                coreFunction: "先告知 AI 你的目的和背景，讓 Gemini 針對你的需求總結影片內容，快速掌握重點資訊。",
+                example: "業務人員快速了解產品說明影片重點、PM 掌握競品分析影片、市場行銷追蹤趨勢。",
+                prompt: `我是一個AI工具博主，我需要了解AI最前沿的科技動態，並且知道AI之後的發展方向。
+
+幫我總結這個視頻主要講了哪些內容，重點列出那些對我的自媒體事業有幫助的事項：
+[貼上YouTube連結]`,
+                departments: ["行銷", "業務", "PM"]
+            },
+            {
+                id: 2,
+                title: "提取影片關鍵流程製作 SOP",
+                tools: ["Gemini"],
+                coreFunction: "觀看螢幕錄影，理解所有操作步驟，自動產生帶時間戳的詳細操作指南，可一鍵導出 Google 文檔。",
+                example: "製作軟體教學內容、內部系統培訓 SOP、工作交接文檔。",
+                prompt: `觀看這個屏幕錄影，並理解影片中的所有操作：
+1. 給出一個詳細的、步驟清晰的指南
+2. 給每個步驟加上時間戳
+3. 格式化為可供分享的文檔格式`,
+                departments: ["行政", "HR", "IT"]
+            },
+            {
+                id: 3,
+                title: "Deep Research 深度研究報告",
+                tools: ["Gemini"],
+                coreFunction: "進行市場調研，分析競品資訊，包含價格、用途、盈利狀況、行銷方法，可導出 Word 或 Gmail 草稿分享。",
+                example: "行銷市場調查、研發技術研究、主管團隊同步認知。",
+                prompt: `我是一個獨立開發者，我需要你調研一下現在市面上所有正在盈利或者人氣比較高的AI工具，包括：
+- 價格
+- 用途
+- 盈利狀況
+- 行銷方法
+
+完成後，請把這份報告提煉出幾個要點，讓我的團隊成員可以快速了解研究結果。`,
+                departments: ["行銷", "研發", "PM"]
+            },
+            {
+                id: 4,
+                title: "從報告生成網頁/圖表/音頻",
+                tools: ["Gemini"],
+                coreFunction: "將長篇研究報告轉換成更易消化的格式：互動式網頁、視覺化圖表或 Podcast 音頻。",
+                example: "通勤時聽 Podcast 學習、將報告轉成視覺化簡報教材。",
+                prompt: `請將這份報告轉換成：
+1. 一個簡潔的互動式網頁摘要
+2. 3-5 張關鍵數據圖表
+3. 一段 5 分鐘的 Podcast 腳本
+
+[貼上報告內容]`,
+                departments: ["行銷", "行政", "PM"]
+            },
+            {
+                id: 5,
+                title: "預設操作 - 自動化排程任務",
+                tools: ["Gemini"],
+                coreFunction: "設定每日定時任務，讓 AI 自動完成重複性工作，如每天早上產生內容選題。",
+                example: "社群小編每日選題、業務每日報表、財務每日數據整理。",
+                prompt: `我是一個財經博主，我需要你在每天早上9點鐘，結合前一天最火的新聞和事件，為我的社群媒體提供5個最新的內容選題。
+
+請包含：
+- 選題標題
+- 切入角度
+- 預期受眾反應`,
+                departments: ["行銷", "業務", "財會"]
+            },
+            {
+                id: 6,
+                title: "選題助手 Gem - 個人專屬 AI",
+                tools: ["Gemini"],
+                coreFunction: "在 Gemini 中創建專屬的 Gem，上傳過往腳本和選題庫，讓 AI 更了解你的風格。",
+                example: "部落客/YouTuber 每日選題、內容創作者風格維持。",
+                prompt: `我是一個YouTube博主，需要創建一個選題助手的Gem。
+
+我的頻道特色：
+- 主題領域：[填入你的領域]
+- 目標受眾：[填入受眾特徵]
+- 內容風格：[填入風格描述]
+
+請幫我設計一個提示詞模板，讓這個Gem能夠：
+1. 分析當前熱門趨勢
+2. 結合我的頻道定位
+3. 產出5-10個選題建議`,
+                departments: ["行銷", "HR"]
+            },
+            {
+                id: 7,
+                title: "Storybook Gem - 繪本製作",
+                tools: ["Gemini"],
+                coreFunction: "將複雜資訊轉化為簡單有趣的故事繪本形式，適合內部培訓教材製作。",
+                example: "新人入職培訓故事化、產品說明繪本化、企業文化傳達。",
+                prompt: `請將以下複雜的公司規章制度，轉化成一個新人小明入職第一天的故事繪本：
+
+[貼上規章制度內容]
+
+要求：
+- 主角是新人小明
+- 用輕鬆有趣的對話呈現
+- 每個場景配上插圖描述
+- 將重點資訊自然融入故事中`,
+                departments: ["HR", "行政"]
+            },
+            {
+                id: 8,
+                title: "個人電郵助理",
+                tools: ["Gemini"],
+                coreFunction: "連結 Gmail、Google 日曆、Google Docs，自動掃描郵件並安排工作日程。",
+                example: "自動化秘書、會議安排、待辦事項整理。",
+                prompt: `請掃描過去24小時我的未讀郵件，並執行以下操作：
+
+1. 按照重要性分類（緊急/一般/可稍後處理）
+2. 提取所有需要回覆的郵件重點
+3. 根據郵件內容在日曆中創建對應的工作日程
+4. 列出今日待辦事項清單`,
+                departments: ["行政", "業務", "PM"]
+            },
+            {
+                id: 9,
+                title: "AI 圖片編輯與合成",
+                tools: ["Gemini"],
+                coreFunction: "多人多主題合成，將產品與模特自然融合，生成專業的展示圖片。",
+                example: "電商產品模特圖、行銷素材生成、社群貼文配圖。",
+                prompt: `請將以下元素合成一張專業的商品展示圖：
+
+元素：
+- 男模特照片
+- 服裝：[描述]
+- 配飾：耳機、墨鏡、手錶
+- 女模特照片
+- 包包產品圖
+- 場景：車輛旁邊
+
+要求：
+- 兩個人站在一起，倚靠在車輛旁邊
+- 產品和模特都自然融入場景
+- 光影真實、專業質感`,
+                departments: ["行銷", "業務"]
+            },
+            {
+                id: 10,
+                title: "一鍵生成圖文部落格",
+                tools: ["Gemini"],
+                coreFunction: "自動生成完整的部落格文章，包含相關配圖，省去分別處理文字和圖片的時間。",
+                example: "HR 內部公告、行銷部落格文章、產品說明文檔。",
+                prompt: `請生成一篇關於「秋季穿搭」的部落格文章：
+
+要求：
+- 文章長度：800-1000字
+- 至少包含3張插圖說明
+- 分段清晰，適合網路閱讀
+- 加入實用的穿搭建議
+- 語調：專業但親切`,
+                departments: ["行銷", "HR"]
+            },
+            {
+                id: 11,
+                title: "Veo2/Veo3 AI 影片生成",
+                tools: ["Gemini"],
+                coreFunction: "使用 Veo2/Veo3 生成創意影片，Pro 用戶每天可生成 3 部影片。",
+                example: "社群短影音、產品展示影片、教學動畫。",
+                prompt: `我想要生成一個創意影片，請幫我寫一個完整的提示詞：
+
+概念：大猩猩在叢林裡拿著自拍桿拍vlog並對著鏡頭說話
+
+要求：
+- 視頻時長：5秒
+- 台詞要非常有趣、幽默
+- 畫面風格：電影感
+- 請提供完整的英文提示詞`,
+                departments: ["行銷", "HR"]
+            },
+            {
+                id: 12,
+                title: "學習輔導與資源推薦",
+                tools: ["Gemini"],
+                coreFunction: "解釋專業概念，並推薦深入學習的線上課程和資源。",
+                example: "員工自我學習成長、跨部門技能學習、新技術了解。",
+                prompt: `請幫我理解「自動化工作流」這個概念：
+
+1. 用簡單易懂的方式解釋定義
+2. 舉3個實際應用案例
+3. 推薦3-5個深入學習的線上資源（課程/文章/影片）
+4. 建議學習路徑和時間規劃`,
+                departments: ["HR", "研發", "行政"]
+            },
+            {
+                id: 13,
+                title: "生成互動式資料儀表盤",
+                tools: ["Gemini"],
+                coreFunction: "上傳銷售數據，自動分析並生成互動式儀表盤，視覺化呈現關鍵指標。",
+                example: "財務報表視覺化、業務績效追蹤、KPI 監控面板。",
+                prompt: `請分析這份銷售數據統計表：
+
+[上傳數據檔案或貼上數據]
+
+請回答：
+1. 哪一個小組銷售額最高？
+2. 目標完成率排名如何？
+3. 月度趨勢變化
+
+並生成一個互動式儀表盤，包含：
+- 銷售額排行榜
+- 完成率進度條
+- 月度趨勢圖`,
+                departments: ["財會", "業務", "PM"]
+            },
+            {
+                id: 14,
+                title: "Canvas 快速生成網頁",
+                tools: ["Gemini"],
+                coreFunction: "根據需求和參考網站，快速生成完整的網頁設計，可直接預覽。",
+                example: "活動報名頁、產品介紹頁、課程說明頁。",
+                prompt: `請幫我設計一個珠寶跨境電商的官網頁面：
+
+設計要求：
+- 主要顏色：baby blue
+- 主要產品：鑽戒和鑽石項鏈
+- 排版風格參考：[參考網站連結]
+
+頁面內容：
+- Hero Banner
+- 產品展示區
+- 品牌故事
+- 客戶評價
+- 聯繫方式`,
+                departments: ["行銷", "業務", "行政"]
+            },
+            {
+                id: 15,
+                title: "程式碼 Debug 與分析",
+                tools: ["Gemini"],
+                coreFunction: "導入程式碼檔案或 GitHub 連結，快速找出 bug 並提供修復建議。",
+                example: "IT 日常除錯、研發程式碼審查、新手學習程式。",
+                prompt: `這個程式碼檔案跑不起來，請幫我檢查：
+
+[貼上程式碼或上傳檔案]
+
+請告訴我：
+1. Bug 在哪裡？
+2. 為什麼會發生這個錯誤？
+3. 如何修復？
+4. 有沒有其他可以優化的地方？`,
+                departments: ["研發", "IT"]
+            },
+            {
+                id: 16,
+                title: "AI Studio Chat - 模型比較",
+                tools: ["AI Studio"],
+                coreFunction: "使用比較模式同時測試多個模型，找出最適合你需求的 AI 模型。",
+                example: "選擇最佳 AI 工具、免費試用各種模型、技術評估。",
+                prompt: `請使用比較模式分析以下問題：
+
+「對比市面上主流的AI影片生成工具，包括：
+- 各工具特點
+- 主要缺點
+- 價格方案
+- 適用場景」
+
+請用表格形式呈現比較結果。`,
+                departments: ["研發", "PM", "行銷"]
+            },
+            {
+                id: 17,
+                title: "即時串流互動助手",
+                tools: ["AI Studio"],
+                coreFunction: "透過 Live 功能進行即時語音溝通、螢幕分享、一起看影片討論。",
+                example: "程式碼即時討論、設計稿審查、學習陪伴。",
+                prompt: `[使用 AI Studio Live 功能]
+
+可以進行的互動：
+- 語音即時溝通
+- 分享螢幕畫面讓 AI 看到你的操作
+- 一起觀看影片並討論
+- 分享代碼或圖片進行即時討論`,
+                departments: ["研發", "行銷", "PM"]
+            },
+            {
+                id: 18,
+                title: "Nanobanana 高畫質圖片生成",
+                tools: ["AI Studio"],
+                coreFunction: "自訂解析度生成圖片，最高支援 4K，可參考現有海報生成相似風格。",
+                example: "活動海報設計、行銷素材製作、產品宣傳圖。",
+                prompt: `請分析這張海報的設計特點：
+
+[上傳參考海報]
+
+然後提供一個「文字轉圖片」的提示詞，生成相似風格的海報，但：
+- 將文字改為「Toy Story」
+- 保持原有的設計風格和排版
+- 輸出 4K 解析度`,
+                departments: ["行銷", "HR", "行政"]
+            },
+            {
+                id: 19,
+                title: "Build 功能 - 快速開發應用",
+                tools: ["AI Studio"],
+                coreFunction: "5 分鐘內建立自訂應用，如短影音文案生成器，解決特定業務需求。",
+                example: "客製化工具開發、部門專屬助手、自動化流程。",
+                prompt: `我想建立一個短視頻文案生成器：
+
+需求：
+- 將長視頻內容轉成短視頻知識庫
+- 無限產出選題和私域文案
+- 寫作風格：說人話、對話感、引發互動
+- 核心目的：刺激預約諮詢或參加直播訓練營
+
+請幫我設計這個工具的架構和提示詞模板。`,
+                departments: ["行銷", "業務", "研發"]
+            },
+            {
+                id: 20,
+                title: "Home Canvas 家居設計師",
+                tools: ["AI Studio"],
+                coreFunction: "AI 輔助室內設計，提供空間規劃和裝潢建議。",
+                example: "辦公室空間規劃、展場設計、門市裝潢參考。",
+                prompt: `請根據這張空間照片，提供室內設計建議：
+
+[上傳空間照片]
+
+需求：
+- 風格：現代簡約
+- 預算等級：中等
+- 主要功能：開放式辦公空間
+
+請提供：
+1. 空間規劃建議
+2. 色彩搭配方案
+3. 傢俱配置建議
+4. 預估參考圖`,
+                departments: ["行政", "業務"]
+            },
+            {
+                id: 21,
+                title: "商業故事拆解分析",
+                tools: ["NotebookLM"],
+                coreFunction: "批量導入商業案例連結，在封閉環境中進行深度分析，避免資料外洩。",
+                example: "競品分析、商業模式研究、案例學習。",
+                prompt: `[在 NotebookLM 中操作]
+
+1. 批量上傳商業案例連結
+2. 請分析這些案例的：
+   - 商業模式
+   - 成功關鍵因素
+   - 可借鏡之處
+   - 潛在風險
+3. 生成綜合分析報告`,
+                departments: ["PM", "業務", "行銷"]
+            },
+            {
+                id: 22,
+                title: "自動生成 Podcast 節目",
+                tools: ["NotebookLM"],
+                coreFunction: "將文件資料自動轉換成對話式 Podcast 內容，支援多種語言。",
+                example: "內部培訓音頻、產品說明 Podcast、知識分享節目。",
+                prompt: `[在 NotebookLM 中操作]
+
+1. 上傳培訓文件/產品資料
+2. 選擇「生成音頻概覽」
+3. 設定：
+   - 語言：繁體中文
+   - 風格：專業但輕鬆
+   - 時長：5-10 分鐘
+4. 生成對話式 Podcast`,
+                departments: ["HR", "行銷", "PM"]
+            },
+            {
+                id: 23,
+                title: "NotebookLM 影片生成",
+                tools: ["NotebookLM"],
+                coreFunction: "將文件轉換成影片格式，適合商業計畫、工作總結、數據報告的呈現。",
+                example: "季度報告影片、專案總結、投資提案。",
+                prompt: `[在 NotebookLM 中操作]
+
+1. 上傳商業計畫書/報告文件
+2. 選擇生成影片功能
+3. 設定：
+   - 風格：專業商務
+   - 重點強調：關鍵數據和結論
+   - 時長：3-5 分鐘
+4. 導出可分享的影片`,
+                departments: ["財會", "PM", "業務"]
+            },
+            {
+                id: 24,
+                title: "製作課程教材",
+                tools: ["NotebookLM"],
+                coreFunction: "將各種資料來源整合，自動生成結構化的課程教材。",
+                example: "新人培訓課程、產品教育訓練、技能提升課程。",
+                prompt: `[在 NotebookLM 中操作]
+
+1. 上傳所有課程相關資料
+2. 請生成課程教材，包含：
+   - 課程大綱
+   - 各章節重點
+   - 練習題目
+   - 評量方式
+3. 導出為可編輯的文檔格式`,
+                departments: ["HR", "行政"]
+            },
+            {
+                id: 25,
+                title: "探索來源 - 智慧問答",
+                tools: ["NotebookLM"],
+                coreFunction: "針對上傳的資料來源進行智慧問答，快速找到特定資訊。",
+                example: "合約條款查詢、技術文檔搜尋、政策規定確認。",
+                prompt: `[在 NotebookLM 中操作]
+
+1. 上傳所有相關文件（合約/手冊/規範）
+2. 使用問答功能詢問：
+   - 「關於[特定主題]的規定是什麼？」
+   - 「在什麼情況下可以[特定行為]？」
+   - 「[術語]的定義是什麼？」
+3. AI 會引用原文來源回答`,
+                departments: ["行政", "財會", "HR"]
+            },
+            {
+                id: 26,
+                title: "深度簡報自動化",
+                tools: ["Google Opal"],
+                coreFunction: "自動生成完整的簡報，包含內容、設計和動畫效果。",
+                example: "業務提案簡報、季度報告、產品發表會。",
+                prompt: `請生成一份專業簡報：
+
+主題：[填入主題]
+目標受眾：[填入受眾]
+簡報時長：[填入時長]
+
+需要包含：
+- 封面頁
+- 目錄
+- 主要內容（5-10 頁）
+- 數據圖表
+- 總結與行動呼籲
+- 謝謝頁
+
+風格：專業商務`,
+                departments: ["業務", "PM", "行銷"]
+            },
+            {
+                id: 27,
+                title: "自動審核助手",
+                tools: ["Google Opal"],
+                coreFunction: "自動審核文件內容，檢查合規性、一致性和完整性。",
+                example: "合約審核、報告校對、提案檢查。",
+                prompt: `請審核這份文件：
+
+[上傳文件]
+
+檢查項目：
+1. 格式是否符合規範
+2. 內容是否完整
+3. 數據是否一致
+4. 有無錯字或語法問題
+5. 是否符合公司政策
+
+請列出所有需要修改的地方。`,
+                departments: ["行政", "財會", "HR"]
+            },
+            {
+                id: 28,
+                title: "自動網站審核與電子報生成",
+                tools: ["Google Opal"],
+                coreFunction: "輸入主題後自動搜索近期新聞，編輯成帶有橫幅圖片的電子報。",
+                example: "產業新聞彙整、競品動態追蹤、市場情報收集。",
+                prompt: `請執行以下任務：
+
+1. 搜索「[主題]」近 48 小時內的新聞
+2. 篩選最重要的 5-8 則新聞
+3. 編輯成電子報格式：
+   - 橫幅圖片
+   - 新聞標題和摘要
+   - 原文連結
+   - 編輯評論
+4. 導出可發送的電子報`,
+                departments: ["行銷", "PM", "業務"]
+            },
+            {
+                id: 29,
+                title: "影片行銷自動化",
+                tools: ["Google Opal"],
+                coreFunction: "自動分析影片內容，生成行銷文案、標題、標籤和縮圖建議。",
+                example: "YouTube 影片優化、社群影片推廣、影片 SEO。",
+                prompt: `請分析這部影片並生成行銷素材：
+
+[上傳影片或貼上連結]
+
+請提供：
+1. 5 個吸引人的標題選項
+2. 影片描述文案（含關鍵字）
+3. 10 個相關標籤
+4. 縮圖設計建議
+5. 社群貼文文案（FB/IG/LinkedIn 各一版）`,
+                departments: ["行銷"]
+            },
+            {
+                id: 30,
+                title: "產品研究助手",
+                tools: ["AI Studio"],
+                coreFunction: "使用 AI Studio Build 功能開發的客製化產品研究工具，可部署到 GitHub 公開分享。",
+                example: "競品功能分析、用戶需求調研、市場機會評估。",
+                prompt: `請進行產品研究分析：
+
+產品/領域：[填入研究對象]
+
+分析面向：
+1. 目標市場規模
+2. 主要競爭者分析
+3. 用戶痛點和需求
+4. 產品功能差異化機會
+5. 定價策略建議
+6. Go-to-market 策略
+
+請提供完整的研究報告。`,
+                departments: ["PM", "研發", "業務"]
+            }
+        ];
+
+        // Department configuration
+        const departments = [
+            { id: 'all', name: '全部', icon: 'apps', color: '#5F6368' },
+            { id: '行銷', name: '行銷', icon: 'campaign', color: '#EA4335' },
+            { id: 'HR', name: 'HR', icon: 'people', color: '#34A853' },
+            { id: '研發', name: '研發', icon: 'code', color: '#4285F4' },
+            { id: '業務', name: '業務', icon: 'trending_up', color: '#FBBC05' },
+            { id: '財會', name: '財會', icon: 'account_balance', color: '#8430CE' },
+            { id: '行政', name: '行政', icon: 'business', color: '#00897B' },
+            { id: 'PM', name: 'PM', icon: 'assignment', color: '#F9AB00' },
+            { id: 'IT', name: 'IT', icon: 'computer', color: '#1A73E8' }
+        ];
+
+        // Platform configuration
+        const platforms = [
+            { id: 'all', name: '全部平台' },
+            { id: 'Gemini', name: 'Gemini' },
+            { id: 'AI Studio', name: 'AI Studio' },
+            { id: 'NotebookLM', name: 'NotebookLM' },
+            { id: 'Google Opal', name: 'Google Opal' }
+        ];
+
+        // State
+        let currentDept = 'all';
+        let currentPlatform = 'all';
+        let searchQuery = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFilters();
+            renderPlatformFilters();
+            renderCards();
+            setupEventListeners();
+        });
+
+        // Render department filters
+        function renderFilters() {
+            const container = document.getElementById('deptFilters');
+            container.innerHTML = departments.map(dept => {
+                const count = dept.id === 'all'
+                    ? applications.length
+                    : applications.filter(app => app.departments.includes(dept.id)).length;
+                return `
+                    <button class="filter-btn ${dept.id === currentDept ? 'active' : ''}"
+                            data-dept="${dept.id}">
+                        <span class="material-icons">${dept.icon}</span>
+                        ${dept.name}
+                        <span class="count">${count}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Render platform filters
+        function renderPlatformFilters() {
+            const container = document.getElementById('platformFilters');
+            container.innerHTML = platforms.map(platform => {
+                const count = platform.id === 'all'
+                    ? applications.length
+                    : applications.filter(app => app.tools.includes(platform.id)).length;
+                return `
+                    <button class="platform-btn ${platform.id === currentPlatform ? 'active' : ''}"
+                            data-platform="${platform.id}">
+                        ${platform.name} (${count})
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Render cards
+        function renderCards() {
+            const container = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const resultsInfo = document.getElementById('resultsInfo');
+
+            const filteredApps = applications.filter(app => {
+                const deptMatch = currentDept === 'all' || app.departments.includes(currentDept);
+                const platformMatch = currentPlatform === 'all' || app.tools.includes(currentPlatform);
+                const searchMatch = searchQuery === '' ||
+                    app.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    app.coreFunction.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    app.tools.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                    app.departments.some(d => d.toLowerCase().includes(searchQuery.toLowerCase()));
+                return deptMatch && platformMatch && searchMatch;
+            });
+
+            resultsInfo.textContent = `顯示 ${filteredApps.length} / ${applications.length} 項應用`;
+
+            if (filteredApps.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            container.innerHTML = filteredApps.map(app => `
+                <div class="card" data-id="${app.id}">
+                    <div class="card-header">
+                        <span class="card-number">${String(app.id).padStart(2, '0')}</span>
+                        <span class="card-title">${app.title}</span>
+                        <div class="tool-tags">
+                            ${app.tools.map(tool => `
+                                <span class="tool-tag ${getToolClass(tool)}">${tool}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="section-title">
+                            <span class="material-icons">lightbulb</span>
+                            核心功能
+                        </div>
+                        <p class="core-function">${app.coreFunction}</p>
+
+                        <div class="section-title">
+                            <span class="material-icons">work</span>
+                            實戰範例
+                        </div>
+                        <div class="example-box">
+                            <p>${app.example}</p>
+                        </div>
+
+                        <div class="section-title">
+                            <span class="material-icons">chat</span>
+                            提示詞範例
+                        </div>
+                        <div class="prompt-section">
+                            <button class="copy-btn" onclick="copyPrompt(${app.id})">
+                                <span class="material-icons">content_copy</span>
+                                複製
+                            </button>
+                            <pre class="prompt-text">${escapeHtml(app.prompt)}</pre>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="dept-tags">
+                            ${app.departments.map(dept => `
+                                <span class="dept-tag ${getDeptClass(dept)}">#${dept}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Helper functions
+        function getToolClass(tool) {
+            const classes = {
+                'Gemini': 'gemini',
+                'NotebookLM': 'notebook',
+                'AI Studio': 'ai-studio',
+                'Google Opal': 'opal'
+            };
+            return classes[tool] || 'gemini';
+        }
+
+        function getDeptClass(dept) {
+            const classes = {
+                '行銷': 'marketing',
+                'HR': 'hr',
+                '研發': 'rd',
+                '業務': 'sales',
+                '財會': 'finance',
+                '行政': 'admin',
+                'PM': 'admin',
+                'IT': 'rd'
+            };
+            return classes[dept] || 'admin';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Copy prompt function
+        function copyPrompt(id) {
+            const app = applications.find(a => a.id === id);
+            if (app) {
+                navigator.clipboard.writeText(app.prompt).then(() => {
+                    showToast('提示詞已複製到剪貼簿');
+
+                    // Update button state
+                    const btn = document.querySelector(`[data-id="${id}"] .copy-btn`);
+                    if (btn) {
+                        btn.classList.add('copied');
+                        btn.innerHTML = '<span class="material-icons">check</span> 已複製';
+                        setTimeout(() => {
+                            btn.classList.remove('copied');
+                            btn.innerHTML = '<span class="material-icons">content_copy</span> 複製';
+                        }, 2000);
+                    }
+                });
+            }
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            // Department filter clicks
+            document.getElementById('deptFilters').addEventListener('click', (e) => {
+                const btn = e.target.closest('.filter-btn');
+                if (btn) {
+                    currentDept = btn.dataset.dept;
+                    renderFilters();
+                    renderCards();
+                }
+            });
+
+            // Platform filter clicks
+            document.getElementById('platformFilters').addEventListener('click', (e) => {
+                const btn = e.target.closest('.platform-btn');
+                if (btn) {
+                    currentPlatform = btn.dataset.platform;
+                    renderPlatformFilters();
+                    renderCards();
+                }
+            });
+
+            // Search input
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderCards();
+            });
+
+            // Scroll to top button
+            const scrollTopBtn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>
